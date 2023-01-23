@@ -1,16 +1,42 @@
-print("Please enter the minimum HBond distance: ")
-minDist = float(input())
+# Initialization
 
-print("Please enter the get request URL: ")
-url = input()
-
-print("Please enter the desired file name (will be saved to current directory): ")
-file_name = input()
-
+from tkinter import filedialog
+from tkinter.filedialog import asksaveasfile
 from openpyxl import Workbook
 import requests
+
 wb = Workbook()
 ws = wb.active
+
+url = "https://swift.cmbi.umcn.nl/cgi/GenericCGI.py"
+
+# Ask
+
+minDist = float(input("Please enter the minimum HBond distance: "))
+
+print("Please select the desired save location:")
+save_file = asksaveasfile(initialfile = 'Untitled.xlsx', defaultextension=".xlsx", filetypes=[("Excel","*.xlsx*")]).name
+
+print("Please select the PDB file:")
+pdb_file = filedialog.askopenfilename()
+
+# Request
+
+payload={'request': 'allhbonds',
+'&PDB1': '',
+'SubmitButton': 'Send'}
+files=[
+  ('&FIL1',('5N4L_1101.pdb',open(pdb_file,'rb'),'application/octet-stream'))
+]
+headers = {}
+
+response = requests.request("POST", url, headers=headers, data=payload, files=files)
+response = response.text[response.text.find("?"):]
+response = response[0:response.find("\"")]
+
+finalResponse = requests.get(url + response)
+
+# Interpret
 
 def isHead(string):
     if string.find("<-->") > -1:
@@ -18,9 +44,8 @@ def isHead(string):
     else:
         return False
 
-b = requests.get(url)
 
-data = b.text.split("\n")
+data = finalResponse.text.split("\n")
 del data[0:8], data[len(data) - 1]
 
 ws.append(["Ligand (Source...Target)", "Bond Distance"])
@@ -79,6 +104,6 @@ for i in range(len(data)):
 
 [ws.append(x) for x in export]
 
-wb.save(file_name + ".xlsx")
+wb.save(save_file)
 
-print(f"Formatted HBonds have been saved to {file_name}.xlsx")
+print(f"Formatted HBonds have been saved to {save_file}")
