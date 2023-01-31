@@ -31,9 +31,3 @@ They can both be downloaded using pip in the command prompt:
 > pip install openpyxl
 
 > pip install requests
-
--------------------
-
-### Future
-
-In a future commit, there will be a way to include the angle of the hydrogen bond using Coot.
