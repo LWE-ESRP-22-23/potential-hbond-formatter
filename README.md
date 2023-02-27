@@ -1,6 +1,6 @@
 # potential-hbond-formatter
 
-The purpose of this repository is to automatically format the output from the Potential HBond server found at https://swift.cmbi.umcn.nl. This server takes in a PDB file and ouputs a long list of potential hydrogen bonds in a protein.
+The purpose of this repository is to automatically format the output from the Potential HBond server found at https://swift.cmbi.umcn.nl. This server takes in a PDB file and ouputs a list of potential hydrogen bonds in a protein.
 
 --------------------
 
