@@ -12,7 +12,7 @@ url = "https://swift.cmbi.umcn.nl/cgi/GenericCGI.py"
 
 # Ask
 
-minDist = float(input("Please enter the minimum HBond distance: "))
+maxDist = float(input("Please enter the maximum HBond distance: "))
 
 print("Please select the desired save location:")
 save_file = asksaveasfile(initialfile = 'Untitled.xlsx', defaultextension=".xlsx", filetypes=[("Excel","*.xlsx*")]).name
@@ -96,7 +96,7 @@ for i in range(len(data)):
                 split[n] = split[n].replace("\r", "")
         dist = float(split[3])
 
-        if dist < minDist:
+        if dist > maxDist:
             continue
 
         nextExp.append(split[3])
